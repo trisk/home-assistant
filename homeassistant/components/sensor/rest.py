@@ -132,10 +132,13 @@ class RestSensor(Entity):
             self._attributes = {}
             if value:
                 try:
-                    json_dict = json.loads(value)
-                    if isinstance(json_dict, dict):
-                        attrs = {k: json_dict[k] for k in self._json_attrs
-                                 if k in json_dict}
+                    json = json.loads(value)
+                    if isinstance(self._json_attrs, dict):
+                        attrs = {k: Template(v).render_with_possible_json_value(
+                            value
+                    if isinstance(json, dict):
+                        attrs = {k: json[k] for k in self._json_attrs
+                                 if k in json}
                         self._attributes = attrs
                     else:
                         _LOGGER.warning("JSON result was not a dictionary")
